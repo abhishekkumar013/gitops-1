@@ -29,7 +29,7 @@ jobs:
           push: true
           tags: abhishekkumar0301/gitops-1:${{ github.sha }}
 
-      - name: Clone staging-ops repo, update image tags, and push tags
+      - name: Clone repo, update image tags, and push tags
         env:
           PAT: ${{ secrets.PAT }}
         run: |

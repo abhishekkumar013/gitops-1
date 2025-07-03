@@ -34,6 +34,7 @@ jobs:
           PAT: ${{ secrets.PAT }}
         run: |
           git clone https://github.com/abhishekkumar013/argo-deployment.git
+          cd argo-deployment
 
           sed -i 's|image: abhishekkumar0301/gitops-1:.*|image: abhishekkumar0301/gitops-1:${{ github.sha }}|' manifest.yml
 

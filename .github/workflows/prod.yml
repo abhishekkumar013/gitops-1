@@ -28,3 +28,24 @@ jobs:
           file: Dockerfile
           push: true
           tags: abhishekkumar0301/gitops-1:${{ github.sha }}
+
+      - name: Clone staging-ops repo, update image tags, and push tags
+        env:
+          PAT: ${{ secrets.PAT }}
+        run: |
+          git clone https://github.com/abhishekkumar013/argo-deployment.git
+          cd argo-deployment
+
+          IMAGE_TAG=abhishekkumar0301/gitops-1:${{ github.sha }}
+          sed -i "s|image: abhishekkumar0301/gitops-1:.*|image: $IMAGE_TAG|" manifest.yml
+
+          git config user.name "GitHub Actions Bot"
+          git config user.email "actions@github.com"
+          git add .
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Update school server image tags to $IMAGE_TAG"
+            git push https://${PAT}@github.com/abhishekkumar013/argo-deployment.git main
+          fi
